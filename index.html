@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knowledge Graphs as Sensemaking Tools</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" id="theme">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+  <style>
+    :root {
+      --navy: #181F2B;
+      --orange: #F5931C;
+      --light: #E8ECF1;
+      --mid: #33465D;
+    }
+    .reveal-viewport { background: var(--navy); }
+    .reveal { font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    .reveal h1, .reveal h2, .reveal h3 { color: var(--orange); font-weight: 700; text-transform: none; letter-spacing: -0.02em; }
+    .reveal h1 { font-size: 2.2em; }
+    .reveal h2 { font-size: 1.6em; }
+    .reveal h3 { font-size: 1.2em; color: var(--light); }
+    .reveal p, .reveal li { color: var(--light); font-size: 0.75em; line-height: 1.5; }
+    .reveal ul { list-style: none; padding-left: 0; }
+    .reveal ul li::before { content: "→ "; color: var(--orange); font-weight: bold; }
+    .reveal ul ul li::before { content: "· "; color: var(--mid); }
+    .reveal .highlight { color: var(--orange); font-weight: 600; }
+    .reveal .subtitle { color: #8899AA; font-size: 0.65em; margin-top: 0.5em; }
+    .reveal .stat { font-size: 2.5em; font-weight: 800; color: var(--orange); }
+    .reveal .stat-label { font-size: 0.6em; color: #8899AA; }
+    .reveal img.screenshot { max-height: 55vh; border-radius: 8px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); border: 1px solid rgba(245,147,28,0.2); }
+    .reveal img.screenshot-lg { max-height: 62vh; border-radius: 8px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); border: 1px solid rgba(245,147,28,0.2); }
+    .reveal .two-col { display: flex; gap: 2em; align-items: flex-start; }
+    .reveal .two-col > div { flex: 1; }
+    .reveal .section-title { font-size: 0.5em; text-transform: uppercase; letter-spacing: 0.15em; color: var(--orange); margin-bottom: 0; }
+    .reveal .mermaid { font-size: 0.65em; }
+    .reveal .mermaid svg { max-height: 50vh; }
+    .reveal blockquote { border-left: 4px solid var(--orange); padding: 0.5em 1em; background: rgba(245,147,28,0.08); font-style: italic; color: #AAB8C8; font-size: 0.7em; }
+    .reveal .stats-grid { display: flex; gap: 1.5em; justify-content: center; flex-wrap: wrap; margin-top: 1em; }
+    .reveal .stats-grid .stat-box { text-align: center; padding: 1em 1.5em; background: rgba(245,147,28,0.08); border-radius: 8px; border: 1px solid rgba(245,147,28,0.15); }
+    .reveal .property-card { background: rgba(245,147,28,0.06); border-left: 3px solid var(--orange); padding: 0.6em 1em; margin: 0.5em 0; border-radius: 0 6px 6px 0; text-align: left; }
+    .reveal .property-card h3 { margin: 0 0 0.2em 0; font-size: 0.9em; }
+    .reveal .property-card p { margin: 0; font-size: 0.65em; }
+    section[data-background-color] h2 { color: var(--light) !important; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- SLIDE 1: Title -->
+<section>
+  <h1>Knowledge Graphs as<br>Sensemaking Tools</h1>
+  <h3>Turning a Body of Work into an Explorable Landscape</h3>
+  <p class="subtitle">Zakk Fleischmann · @0xZakk · Sensemaking Scenius</p>
+  <aside class="notes">
+    Introduce yourself. This talk is about a technique for turning large bodies of content into something navigable and explorable, using knowledge graphs. You'll show a concrete example and walk through how to build one.
+  </aside>
+</section>
+
+<!-- SLIDE 2: The Information We Have -->
+<section>
+  <p class="section-title">The Problem</p>
+  <h2>We Have More Content Than Ever</h2>
+  <ul>
+    <li>Podcasts, YouTube channels, lecture series, research papers, blog archives</li>
+    <li>A single thinker can produce <span class="highlight">hundreds of hours</span> of content over years</li>
+    <li>Ideas build on each other, themes recur, concepts illuminate across contexts</li>
+    <li>But the <span class="highlight">medium doesn't show you the connections</span></li>
+  </ul>
+  <aside class="notes">
+    We live in an era of abundant long-form content. A single creator or thinker can produce hundreds of hours of content over years. That content is deeply interconnected -- ideas build on each other, themes recur, concepts from one context illuminate another. But the medium doesn't show you those connections.
+  </aside>
+</section>
+
+<!-- SLIDE 3: The Problem with Linear Media -->
+<section>
+  <h2>Linear Media Hides Connections</h2>
+  <ul>
+    <li>YouTube, podcasts, blog posts -- all <span class="highlight">linear</span></li>
+    <li>Search only works when you already know what you're looking for</li>
+    <li>The connections between ideas -- the most valuable part -- are <span class="highlight">invisible</span></li>
+  </ul>
+  <blockquote>A coaching session about anger might illuminate something said about leadership in a completely different context. But you'd never find that connection unless you watched both and remembered both.</blockquote>
+  <aside class="notes">
+    You can search, but search only works when you already know what you're looking for. The connections between ideas are invisible. A coaching session about anger might illuminate something said about leadership in a completely different context. But you'd never find that connection unless you happened to watch both videos and remembered both.
+  </aside>
+</section>
+
+<!-- SLIDE 4: What Sensemaking Requires -->
+<section>
+  <h2>What Sensemaking Actually Requires</h2>
+  <ul>
+    <li>Making sense of a body of work means seeing the <span class="highlight">structure</span> -- the relationships between ideas</li>
+    <li>Not consuming linearly, but <span class="highlight">exploring</span></li>
+  </ul>
+  <blockquote>"Technology has destroyed our collective sensemaking. It's time to rebuild our sanity."<br><span style="color:var(--orange);font-style:normal;">-- Sensemaking Scenius</span></blockquote>
+  <p style="font-size:0.8em;color:var(--orange);margin-top:1em;">What if we could make a body of work <em>explorable</em> instead of just watchable?</p>
+  <aside class="notes">
+    Making sense of a body of work isn't about consuming it linearly. It's about seeing the structure -- the relationships between ideas. This is exactly what the Scenius is about. What if we could take a body of work and make it explorable instead of just watchable?
+  </aside>
+</section>
+
+<!-- SLIDE 5: The Three Layers -->
+<section>
+  <p class="section-title">The Approach</p>
+  <h2>Three Layers of an Explorable Body of Work</h2>
+  <div class="mermaid">
+graph TD
+    subgraph "Layer 3: Curated Entry Points"
+        T1["Emotions &amp; Processing"]
+        T2["Leadership &amp; Business"]
+        T3["Relationships &amp; Connection"]
+    end
+    subgraph "Layer 2: Atomic Ideas"
+        A1["Emotions move fastest\nwithout story"]
+        A2["All decisions are\nemotional"]
+        A3["Joy is the\nmatriarch emotion"]
+        A4["Empathy transforms\nbusiness"]
+    end
+    subgraph "Layer 1: Sources"
+        S1["Video: Emotional Fluidity"]
+        S2["Video: Feel Over Figure"]
+        S3["Video: Great Decisions"]
+    end
+    T1 --> A1
+    T1 --> A2
+    T1 --> A3
+    T2 --> A4
+    T2 --> A2
+    S1 --> A1
+    S1 --> A3
+    S2 --> A2
+    S3 --> A4
+    A1 -.-> A3
+    A2 -.-> A4
+    style A1 fill:#F5931C,color:#fff
+    style A2 fill:#F5931C,color:#fff
+    style A3 fill:#F5931C,color:#fff
+    style A4 fill:#F5931C,color:#fff
+    style T1 fill:#33465D,color:#fff
+    style T2 fill:#33465D,color:#fff
+    style T3 fill:#33465D,color:#fff
+    style S1 fill:#181F2B,color:#fff,stroke:#F5931C
+    style S2 fill:#181F2B,color:#fff,stroke:#F5931C
+    style S3 fill:#181F2B,color:#fff,stroke:#F5931C
+  </div>
+  <aside class="notes">
+    Three layers: Sources (original material), Atomic Ideas (individual concepts extracted and linkable), and Curated Entry Points (narrative guides weaving ideas into themes). The key insight: the connections between atomic ideas -- the dotted lines -- are where real sensemaking happens. An idea about emotions connects to decision-making connects to leadership, revealing patterns invisible in the original videos.
+  </aside>
+</section>
+
+<!-- SLIDE 6: Demo Homepage -->
+<section>
+  <h2>The Example: Art of Accomplishment</h2>
+  <img class="screenshot-lg" src="images/01-homepage.jpg" alt="Homepage">
+  <p style="font-size:0.6em;color:#8899AA;">Joe Hudson's YouTube channel · ~300 videos · Self-development, emotions, leadership</p>
+  <aside class="notes">
+    I built this for a body of work I care about: Joe Hudson's Art of Accomplishment YouTube channel. About 300 videos on self-development, emotional processing, relationships, leadership. Walk through the homepage briefly. This is the example -- the principles apply to any body of work.
+  </aside>
+</section>
+
+<!-- SLIDE 7: A Source Note -->
+<section>
+  <h2>A Source Note</h2>
+  <img class="screenshot-lg" src="images/04-source-note.jpg" alt="Source Note">
+  <p style="font-size:0.6em;color:#8899AA;">Embedded video · AI summary · Key concepts (linked) · Quotes · Full transcript</p>
+  <aside class="notes">
+    Each original video becomes a structured page: embedded video, AI-generated summary, key concepts as links, key quotes, and full transcript. The source note is a hub -- it links outward to the atomic ideas it contains.
+  </aside>
+</section>
+
+<!-- SLIDE 8: An Atomic Idea -->
+<section>
+  <h2>An Atomic Idea (Teaching)</h2>
+  <img class="screenshot-lg" src="images/06-teaching-with-backlinks.jpg" alt="Teaching with backlinks">
+  <p style="font-size:0.6em;color:#8899AA;">17 backlinks · Related concepts · Local graph visualization</p>
+  <aside class="notes">
+    This is the core unit. One idea, written as a statement: "All decisions are emotional, never purely rational." 2-3 paragraphs of explanation with a relevant quote. Related Concepts -- explicit links. Backlinks -- every other page that references this idea (the graph working in reverse). Local Graph -- visual map. Notice: 17 other teachings reference this one. That's 17 connections you'd never see watching linearly.
+  </aside>
+</section>
+
+<!-- SLIDE 9: A Topic Page -->
+<section>
+  <h2>A Curated Entry Point</h2>
+  <img class="screenshot-lg" src="images/02-topic-page.jpg" alt="Topic Page">
+  <p style="font-size:0.6em;color:#8899AA;">600-1200 word narrative · Every bold phrase links to a teaching</p>
+  <aside class="notes">
+    The topic page is the editorial layer. It's a 600-1200 word essay that weaves atomic ideas together into a coherent narrative. Every bold phrase is a link to a teaching. You can read it as an essay, or click into any idea and start exploring. This is where human curation matters most -- AI can extract ideas, but the narrative structure is a sensemaking act.
+  </aside>
+</section>
+
+<!-- SLIDE 10: The Graph -->
+<section>
+  <h2>The Graph</h2>
+  <img class="screenshot-lg" src="images/05-graph-view.jpg" alt="Graph View">
+  <p style="font-size:0.6em;color:#8899AA;">Every node is a page · Every line is a link · Clusters form around themes</p>
+  <aside class="notes">
+    The full knowledge graph: every node is a page, every line is a link. You can see clusters forming around themes. Click any node to navigate there. This is the shape of a body of work -- something you could never see from a YouTube playlist.
+  </aside>
+</section>
+
+<!-- SLIDE 11: Pipeline Overview -->
+<section data-background-color="#0F1520">
+  <p class="section-title">How I Built It</p>
+  <h2 style="color:var(--orange) !important;">The Pipeline</h2>
+  <div class="mermaid">
+graph LR
+    A["300 YouTube\nVideos"] --> B["Transcript\nExtraction"]
+    B --> C["Source Note\nGeneration"]
+    C --> D["Atomic Idea\nExtraction"]
+    D --> E["Semantic\nLinking"]
+    E --> F["Website\nBuild"]
+    F --> G["Curation &amp;\nPolish"]
+    style A fill:#181F2B,color:#fff,stroke:#F5931C
+    style B fill:#33465D,color:#fff
+    style C fill:#33465D,color:#fff
+    style D fill:#F5931C,color:#fff
+    style E fill:#F5931C,color:#fff
+    style F fill:#33465D,color:#fff
+    style G fill:#33465D,color:#fff
+  </div>
+  <p style="font-size:0.7em;">Seven steps, from raw video to explorable knowledge graph</p>
+  <aside class="notes">
+    Seven steps from raw video to explorable knowledge graph. I'll walk through each one. The orange steps -- atomic idea extraction and semantic linking -- are the most important.
+  </aside>
+</section>
+
+<!-- SLIDE 12: Transcript Extraction -->
+<section>
+  <h2>Step 1: Transcript Extraction</h2>
+  <ul>
+    <li>YouTube auto-generated subtitles -- surprisingly usable</li>
+    <li>Downloaded with <span class="highlight">yt-dlp</span> for all ~300 videos</li>
+    <li>Cleaned: stripped timestamps, removed duplicate lines</li>
+  </ul>
+  <blockquote>The transcript is the raw material. Without it, the knowledge is locked inside the video.</blockquote>
+  <aside class="notes">
+    Every YouTube video has auto-generated subtitles. These are surprisingly usable -- not perfect, but good enough for AI to work with. Used yt-dlp to download subtitle files for all 300 videos, then cleaned them up: stripped timestamps, removed duplicate lines. This step makes content readable by both humans and AI.
+  </aside>
+</section>
+
+<!-- SLIDE 13: Source Note Generation -->
+<section>
+  <h2>Step 2: Source Note Generation</h2>
+  <div class="mermaid">
+graph TD
+    V["Video Transcript"] --> AI["Claude AI"]
+    AI --> SN["Source Note"]
+    SN --> Sum["Summary"]
+    SN --> KC["Key Concepts\n(linked)"]
+    SN --> KQ["Key Quotes"]
+    SN --> FT["Full Transcript\n(searchable)"]
+    style AI fill:#F5931C,color:#fff
+    style SN fill:#181F2B,color:#fff,stroke:#F5931C
+    style Sum fill:#33465D,color:#fff
+    style KC fill:#33465D,color:#fff
+    style KQ fill:#33465D,color:#fff
+    style FT fill:#33465D,color:#fff
+  </div>
+  <p style="font-size:0.65em;color:#8899AA;">Processed in batches of 3 videos for quality consistency</p>
+  <aside class="notes">
+    Fed each transcript to Claude and asked it to produce a structured summary. Each source note includes: summary, key concepts as links, notable quotes, and full transcript. Processed in batches of 3. The source note is a structured index that makes content scannable and links it into the larger graph.
+  </aside>
+</section>
+
+<!-- SLIDE 14: Atomic Idea Extraction -->
+<section>
+  <h2>Step 3: Atomic Idea Extraction</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>One idea per note, written as a <span class="highlight">statement</span></li>
+        <li>2-3 paragraphs + relevant quote + related links</li>
+        <li>Content dictates count per video</li>
+      </ul>
+    </div>
+    <div class="mermaid">
+graph LR
+    V1["5-min video"] --> N1["1 note"]
+    V2["30-min podcast"] --> N2["4-6 notes"]
+    V3["90-min coaching"] --> N3["10-15 notes"]
+    style V1 fill:#33465D,color:#fff
+    style V2 fill:#33465D,color:#fff
+    style V3 fill:#33465D,color:#fff
+    style N1 fill:#F5931C,color:#fff
+    style N2 fill:#F5931C,color:#fff
+    style N3 fill:#F5931C,color:#fff
+    </div>
+  </div>
+  <div class="stats-grid" style="margin-top:0.8em;">
+    <div class="stat-box"><div class="stat" style="font-size:2em;">1,248</div><div class="stat-label">teaching notes</div></div>
+    <div class="stat-box"><div class="stat" style="font-size:2em;">~4.2</div><div class="stat-label">avg per video</div></div>
+    <div class="stat-box"><div class="stat" style="font-size:2em;">296</div><div class="stat-label">source videos</div></div>
+  </div>
+  <aside class="notes">
+    This is the most important step. For each video, Claude identifies distinct ideas and writes each as a standalone note. The rule: one idea per note, written as a statement, not a label. "Emotions move fastest without story" -- not "Emotions and stories." Each gets 2-3 paragraphs, a quote, and links. 296 videos produced 1,248 atomic teaching notes at about 4.2 per video. Atomic ideas are what makes the graph explorable -- when an idea stands alone, it can connect to ideas from any source.
+  </aside>
+</section>
+
+<!-- SLIDE 15: Quality Control -->
+<section>
+  <h2>Step 4: Quality Control</h2>
+  <div class="stats-grid">
+    <div class="stat-box"><div class="stat" style="font-size:1.8em;">25</div><div class="stat-label">orphaned notes fixed</div></div>
+    <div class="stat-box"><div class="stat" style="font-size:1.8em;">14</div><div class="stat-label">sources reprocessed</div></div>
+    <div class="stat-box"><div class="stat" style="font-size:1.8em;">1</div><div class="stat-label">non-content video removed</div></div>
+  </div>
+  <p style="font-size:0.75em;margin-top:1.5em;color:var(--orange);">Human-in-the-loop: AI does the heavy lifting, but a human checks the work.</p>
+  <aside class="notes">
+    First pass isn't perfect. Some notes got created without proper links back to their source. Some source notes came out incomplete. Fixed 25 orphaned notes, reprocessed 14 incomplete sources, removed 1 non-content video (a 1-minute channel trailer). The graph is only as good as its individual nodes.
+  </aside>
+</section>
+
+<!-- SLIDE 16: Semantic Linking -->
+<section>
+  <h2>Step 5: Semantic Linking</h2>
+  <p style="font-size:0.7em;">The magic step</p>
+  <div class="mermaid">
+graph TD
+    A["1,248 teaching notes"] --> B["Generate embeddings\n(mathematical fingerprint\nof meaning)"]
+    B --> C["Compare every pair\n(778,128 comparisons)"]
+    C --> D["Keep pairs above\n0.80 similarity"]
+    D --> E["806 notes got\nnew connections"]
+    style B fill:#F5931C,color:#fff
+    style D fill:#F5931C,color:#fff
+    style E fill:#181F2B,color:#fff,stroke:#F5931C
+  </div>
+  <aside class="notes">
+    With 1,248 notes, there are over 778,000 possible pairs. No human can check them all. Used vector embeddings -- a mathematical fingerprint of each note's meaning. Two notes about similar concepts get similar vectors. Cosine similarity measures closeness: 1.0 = identical, 0.0 = unrelated. Threshold at 0.80. Result: 806 notes got new connections -- the non-obvious ones. An idea about anger linking to leadership, a coaching concept connecting to a solo teaching months later. This step turns a collection into a graph.
+  </aside>
+</section>
+
+<!-- SLIDE 17: Website Build -->
+<section>
+  <h2>Step 6: Website Build</h2>
+  <ul>
+    <li><span class="highlight">Quartz</span> -- static site generator for knowledge graphs / digital gardens</li>
+    <li>Takes markdown with wiki links, renders as navigable website</li>
+    <li>Full-text search, graph visualization, hover previews, backlinks</li>
+  </ul>
+  <blockquote style="margin-top:1em;">Fun detail: had to disable LaTeX rendering because Joe talks about money a lot and dollar signs were being interpreted as math equations.</blockquote>
+  <aside class="notes">
+    Used Quartz, a static site generator built specifically for knowledge graphs and digital gardens. It takes the markdown files with wiki links and renders them as a navigable website with full-text search, graph visualization, hover previews (popover on link hover), and backlinks. One funny detail: had to disable LaTeX rendering because dollar signs were interpreted as math equations.
+  </aside>
+</section>
+
+<!-- SLIDE 18: Curation and Polish -->
+<section>
+  <h2>Step 7: Curation & Polish</h2>
+  <ul>
+    <li>Wrote <span class="highlight">10 topic pages</span> -- 600-1200 word narrative essays</li>
+    <li>Rebranded to match Art of Accomplishment's design language</li>
+    <li>Renamed folders from technical jargon to human-friendly names<br>
+        <span style="font-size:0.85em;color:#8899AA;">"literature-notes" → "teachings" · updated links in 1,500+ files</span></li>
+    <li>Categorized: 108 podcasts, 95 lessons, 87 coaching sessions, 5 guest appearances</li>
+  </ul>
+  <p style="font-size:0.7em;color:var(--orange);margin-top:1em;">Curation is the sensemaking act -- choosing how to frame ideas, what to highlight, what threads to pull.</p>
+  <aside class="notes">
+    Wrote the 10 topic pages as narrative essays weaving atomic ideas together. Rebranded the site, renamed folders from technical jargon to human-friendly names -- requiring updates in 1,500+ files. Added categorization. The curation layer makes this a sensemaking tool instead of just a database. The topic pages represent interpretation.
+  </aside>
+</section>
+
+<!-- SLIDE 19: The Timeline -->
+<section>
+  <h2>The Timeline: 3 Days</h2>
+  <div class="mermaid">
+gantt
+    title Build Timeline
+    dateFormat YYYY-MM-DD
+    axisFormat %b %d
+    section Day 1
+        Transcript extraction     :done, d1, 2026-01-28, 1d
+        Source note generation     :done, d2, 2026-01-28, 1d
+        Atomic idea extraction    :done, d3, 2026-01-28, 1d
+        Quality control           :done, d4, 2026-01-28, 1d
+        Semantic linking          :done, d5, 2026-01-28, 1d
+    section Day 2
+        Site rebrand              :done, d6, 2026-01-29, 1d
+        UX improvements           :done, d7, 2026-01-29, 1d
+        Topic pages               :done, d8, 2026-01-29, 1d
+    section Day 3
+        Final polish and deploy   :done, d10, 2026-01-30, 1d
+  </div>
+  <p style="font-size:0.7em;">AI handles extraction at scale. Humans shape the organization, thresholds, curation, design.</p>
+  <aside class="notes">
+    From zero to 1,500+ interconnected notes in 3 days. AI did the extraction; human decisions shaped the organization, the threshold, the curation, the design. This speed is new. Building a knowledge graph of this scale used to be a months-long academic project.
+  </aside>
+</section>
+
+<!-- SLIDE 20: Three Properties -->
+<section data-background-color="#0F1520">
+  <p class="section-title">Why This Matters</p>
+  <h2 style="color:var(--orange) !important;">Three Properties of Knowledge Graphs</h2>
+  <div class="property-card">
+    <h3>1. Emergence</h3>
+    <p>The graph reveals structure invisible in any individual source. Joe never said "here's how shame connects to leadership." The graph shows it.</p>
+  </div>
+  <div class="property-card">
+    <h3>2. Multiple Entry Points</h3>
+    <p>No "right" way to navigate. Start from a topic, a video, a concept, or the graph itself. Understanding isn't linear -- it's a web.</p>
+  </div>
+  <div class="property-card">
+    <h3>3. Shared Substrate</h3>
+    <p>A landscape multiple people can explore simultaneously and compare notes. Collective intelligence requires shared, navigable artifacts.</p>
+  </div>
+  <aside class="notes">
+    Three properties. Emergence: the graph shows structure not visible in any single source. Multiple Entry Points: there's no right way to navigate -- different paths produce different understanding. Shared Substrate: once the graph exists, a community can explore, annotate, challenge, and extend it together. This connects to the Scenius mission of cultivating collective intelligence.
+  </aside>
+</section>
+
+<!-- SLIDE 21: The Pattern is General -->
+<section>
+  <h2>The Pattern is General</h2>
+  <ul>
+    <li>A research field's papers and findings</li>
+    <li>An organization's institutional knowledge</li>
+    <li>A community's collected conversations</li>
+    <li>A thinker's works across books, lectures, interviews</li>
+    <li>A movement's ideas and debates</li>
+  </ul>
+  <p style="font-size:0.75em;color:var(--orange);margin-top:1.2em;"><strong>The pattern:</strong> scattered sources → atomic ideas → connections → navigation → curation</p>
+  <aside class="notes">
+    This isn't specific to one YouTube channel. The same approach works for any large body of interconnected content. The pattern: take scattered sources, extract atomic ideas, find connections (human + semantic), make it navigable, curate entry points.
+  </aside>
+</section>
+
+<!-- SLIDE 22: Role of AI -->
+<section>
+  <h2>What's the Role of AI?</h2>
+  <div class="two-col">
+    <div>
+      <h3 style="color:var(--orange);">AI = Extraction</h3>
+      <ul>
+        <li>Reads transcripts, identifies concepts</li>
+        <li>Handles scale: 300 transcripts → 1,248 notes in days</li>
+        <li>Surfaces connections via embeddings</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="color:var(--orange);">Human = Curation</h3>
+      <ul>
+        <li>Decides what to extract and how to organize</li>
+        <li>Sets similarity thresholds</li>
+        <li>Authors narrative topic pages</li>
+        <li>The highest-value sensemaking work</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size:0.75em;color:var(--orange);margin-top:1.2em;">A partnership: AI handles volume, humans handle meaning.</p>
+  <aside class="notes">
+    AI is the extraction layer -- handles scale. Humans are the curation layer -- decide what matters. The semantic linking step is interesting because it's neither: AI surfaces connections for humans to navigate. The algorithm doesn't know which connections are meaningful -- it just knows which are mathematically similar. The human explores and decides what matters. This is a partnership model.
+  </aside>
+</section>
+
+<!-- SLIDE 23: What Could You Build? -->
+<section>
+  <h2>What Could You Build a Knowledge Graph Of?</h2>
+  <ul>
+    <li>Your community's writings, talks, conversations, and research</li>
+    <li>A field you're trying to make sense of</li>
+    <li>An author's collected works</li>
+    <li>Workshop outputs, meeting notes, collaborative research</li>
+  </ul>
+  <p style="font-size:0.85em;color:var(--orange);margin-top:1.5em;">What body of knowledge would benefit most from this treatment?</p>
+  <aside class="notes">
+    Open it up for the audience to think about. What body of knowledge in their world would benefit from being turned into an explorable knowledge graph? The Scenius's own output? A field they're researching? An organization's institutional knowledge?
+  </aside>
+</section>
+
+<!-- SLIDE 24: Open Questions -->
+<section>
+  <h2>Open Questions</h2>
+  <ul>
+    <li>How do you handle <span class="highlight">disagreement</span> in a knowledge graph? This maps one person's views. What about diverse, conflicting perspectives?</li>
+    <li>What's <span class="highlight">lost</span> when you atomize ideas? Narrative flow for discoverability -- always the right trade?</li>
+    <li>Could a knowledge graph be a <span class="highlight">living</span>, collectively maintained sensemaking artifact? What would governance look like?</li>
+    <li>How does this connect to <span class="highlight">relational governance</span> and participatory sensemaking?</li>
+  </ul>
+  <aside class="notes">
+    These are genuine open questions for discussion. Disagreement is a big one -- this project maps one person's views, but a community knowledge graph would have tension and debate. The atomization trade-off is real: you gain discoverability but lose narrative flow. Living, collectively maintained graphs raise governance questions. Connect to the Scenius's work on relational governance.
+  </aside>
+</section>
+
+<!-- SLIDE 25: Where to Explore -->
+<section>
+  <h2>Explore</h2>
+  <div style="text-align:center;">
+    <p style="font-size:1.4em;"><span class="highlight">aoa.zkf.io</span></p>
+  </div>
+  <div class="stats-grid" style="margin-top:0.5em;">
+    <div class="stat-box"><div class="stat" style="font-size:1.5em;">296</div><div class="stat-label">sources</div></div>
+    <div class="stat-box"><div class="stat" style="font-size:1.5em;">1,248</div><div class="stat-label">teachings</div></div>
+    <div class="stat-box"><div class="stat" style="font-size:1.5em;">10</div><div class="stat-label">topic pages</div></div>
+    <div class="stat-box"><div class="stat" style="font-size:1.5em;">806</div><div class="stat-label">semantically linked</div></div>
+  </div>
+  <p style="font-size:0.65em;color:#8899AA;margin-top:1.2em;">Stack: yt-dlp · Claude · Python (sentence-transformers) · Quartz v4<br>Built in 3 days, January 2026</p>
+  <p style="font-size:0.8em;margin-top:0.8em;"><span class="highlight">@0xZakk</span></p>
+  <aside class="notes">
+    Point people to the site. Mention the tech stack briefly. Thank the audience and open for discussion.
+  </aside>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js-mermaid-plugin@11.4.1/plugin/mermaid/mermaid.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    width: 1280,
+    height: 720,
+    margin: 0.08,
+    transition: 'fade',
+    transitionSpeed: 'fast',
+    plugins: [RevealNotes, RevealHighlight, RevealMermaid],
+    mermaid: {
+      theme: 'dark',
+      themeVariables: {
+        darkMode: true,
+        background: '#181F2B',
+        primaryColor: '#F5931C',
+        primaryTextColor: '#E8ECF1',
+        primaryBorderColor: '#F5931C',
+        lineColor: '#8899AA',
+        secondaryColor: '#33465D',
+        tertiaryColor: '#181F2B',
+        fontFamily: 'Inter, system-ui, sans-serif'
+      }
+    }
+  });
+</script>
+</body>
+</html>
